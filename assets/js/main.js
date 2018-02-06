@@ -1,21 +1,36 @@
+function initMap() {
+  var lab = {lat: -12.1191427,
+    lng: -77.0349046};
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 18,
+    center: miUbicacion
+  });
+  var markLab = new google.maps.Marker({
+    position: lab,
+    map: map
+  });
+}
+
 function findMe() {
   // verificamos si el navegador soporta la geolocalización
-  var output = document.getElementById('map');
+//   var output = document.getElementById('map');
   if (navigator.geolocation) {
-    output.innerHTML = '<p>tu navegador soporta Geolocalización</p>';
-  } else {
-    output.innerHTML = '<p>tu navegador no soporta Geolocalización</p>';
+    navigator.geolocation.getCurrentPosition(funExito, funError);
   }
   // primera funcion que utilizaremos como parametro para getCurrentPosition
-  function localization(position) {
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
+  var latitud, longitud;
+  var funExito = function(position) {
+    latitud = position.coords.latitude;
+    longitud = position.coords.longitude;
+  };
+  var miUbicacion = new google.maps.Marker({
+    position: {lat: latitud,
+      lng: longitud},
+    map: map
+  });
 
-    output.innerHTML = '<p>Latitud : ' + latitude + '<br>Longitud : ' + longitude + '</p>';
-  }
   // segundo parametro para getCurrentPosition
-  function error() {
-    output.innerHTML = '<p>no se pudo obtener tu geolocalización</p>';
+  var funError = function(error) {
+    alert('tenemos un problema para encontrar tu ubicación');
   }
-  navigator.geolocation.getCurrentPosition(localization, error);
 }

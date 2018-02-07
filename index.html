@@ -9,13 +9,21 @@
   <link rel="stylesheet" href=".\assets\css\main.css">
 </head>
 <body>
-  <button type="button" name="button" onclick="findMe()">mostrar la ubicacion</button>
+  <button type="button" name="button" onclick="findMe()">Ubicacion actual</button>
+  <input id="inputPartida" type="text" name="" value="" placeholder="Partida">
+  <input id="inputDestino" type="text" name="" value="" placeholder="Destino">
   <div id="map"></div>
 
 
 
+  <script type="text/javascript">
+
+  </script>
+
+
+
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxztYzthfKMdB2NPPOawVxbetN-cLiAYU&callback=initMap"></script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxztYzthfKMdB2NPPOawVxbetN-cLiAYU&callback=initMap&libraries=places"></script>
   <script type="text/javascript" src=".\assets\js\main.js"></script>
 </body>
 </html>

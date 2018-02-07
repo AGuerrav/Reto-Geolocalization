@@ -24,17 +24,19 @@ function funExito(respuesta) {
 }
 */
 function initMap() {
-  var lab = {lat: -12.1191427,
+  var labPeru = {lat: -12.1191427,
     lng: -77.0349046};
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 18,
-    center: lab
+    center: labPeru
   });
   var markLab = new google.maps.Marker({
-    position: lab,
+    position: labPeru,
+    animation: google.maps.Animation.DROP,
     map: map
   });
   var map = document.getElementById('map');
+  // Mi ubicacion
   document.getElementById('findMe').addEventListener('click', findMe);
   function findMe() {
     if (navigator.geolocation) {
@@ -59,9 +61,46 @@ function initMap() {
     // creo el marcador
     var objConfigMarker = {
       position: gLatLon,
+      animation: google.maps.Animation.DROP,
       map: gMapa,
       title: 'Usted está aquí'
     };
     var gMarker = new google.maps.Marker(objConfigMarker);
   };
+  // Autocompletado
+  var inputInitial = document.getElementById('inputInitial');
+  var autocompleteInitial = new google.maps.places.Autocomplete(inputInitial);
+  var inputArrival = document.getElementById('inputArrival');
+  var autocompleteArrival = new google.maps.places.Autocomplete(inputArrival);
+  // Ruta
+  var directionsService = new google.maps.DirectionsService; // verifica los trazos a seguir
+  var directionsDisplay = new google.maps.DirectionsRenderer; // traduce las coordenadas a dibujo
+
+  document.getElementById('drawMap').addEventListener('click', function() {
+    drawMap(directionsService, directionsDisplay);
+  });
+
+  function drawMap(directionsService, directionsDisplay) {
+      var origin = inputInitial.value;
+      var destination = inputArrival.value;
+
+      if(destination !== '' && destination !== '') {
+          directionsService.route({
+              origin: origin,
+              destination: destination,
+              travelMode: 'DRIVING'
+          },
+          function(response, status) {
+              if (status === 'OK') {
+                  directionsDisplay.setDirections(response);
+              } else {
+                window.alert('No encontramos una ruta')
+              }
+          });
+      }
+
+
+  }
+  directionsDisplay.setMap(map);
+
 };

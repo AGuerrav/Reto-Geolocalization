@@ -66,7 +66,7 @@ function initMap() {
     // creo el marcador
     var objConfigMarker = {
       position: gLatLon,
-      animation: google.maps.Animation.DROP,
+      animation: google.maps.Animation.BOUNCE,
       map: gMapa,
       icon: 'assets/img/bicycle-rider.png',
 

@@ -37,6 +37,10 @@ function initMap() {
   //   map: map
   // });
   var map = document.getElementById('map');
+  var icon = {
+    url: 'https://i.imgur.com/6wqDodT.png',
+    scaledSize: new google.maps.Size(25, 25),
+  };
 
   navigator.geolocation.getCurrentPosition(funExito, funError);
   // Mi ubicacion
@@ -82,29 +86,43 @@ function initMap() {
   var autocompleteArrival = new google.maps.places.Autocomplete(inputArrival);
   // Ruta
   var directionsService = new google.maps.DirectionsService; // verifica los trazos a seguir
-  var directionsDisplay = new google.maps.DirectionsRenderer; // traduce las coordenadas a dibujo
+  var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true}); // traduce las coordenadas a dibujo
+
 
   document.getElementById('drawMap').addEventListener('click', function() {
     drawMap(directionsService, directionsDisplay);
-  });
-  function drawMap(directionsService, directionsDisplay) {
-    var origin = inputInitial.value;
-    var destination = inputArrival.value;
-
-    if (origin !== '' && destination !== '') {
-      directionsService.route({
-        origin: origin,
-        destination: destination,
-        travelMode: 'DRIVING'
-      },
-      function(response, status) {
-        if (status === 'OK') {
-          directionsDisplay.setMap(gMapa);
-          directionsDisplay.setDirections(response);
-        } else {
-          window.alert('No encontramos una ruta');
-        }
+    function makeMarker(position, icon, title) {
+      var marker = new google.maps.Marker({
+        position: position,
+        animation: google.maps.Animation.DROP,
+        map: gMapa,
+        icon: 'assets/img/bicycle-rider.png',
+        title: title
       });
     }
-  }
+
+    function drawMap(directionsService, directionsDisplay) {
+      var origin = inputInitial.value;
+      var destination = inputArrival.value;
+
+      if (origin !== '' && destination !== '') {
+        directionsService.route({
+          origin: origin,
+          destination: destination,
+          travelMode: 'DRIVING'
+        },
+        function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setMap(gMapa);
+            directionsDisplay.setDirections(response);
+            var leg = response.routes[ 0 ].legs[ 0 ];
+            makeMarker(leg.start_location, icon, 'Origen');
+            makeMarker(leg.end_location, icon, 'Destino');
+          } else {
+            window.alert('No encontramos una ruta');
+          }
+        });
+      }
+    }
+  });
 };

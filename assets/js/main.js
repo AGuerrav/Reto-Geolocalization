@@ -87,12 +87,11 @@ function initMap() {
   document.getElementById('drawMap').addEventListener('click', function() {
     drawMap(directionsService, directionsDisplay);
   });
-};
   function drawMap(directionsService, directionsDisplay) {
     var origin = inputInitial.value;
     var destination = inputArrival.value;
 
-    if (destination !== '' && destination !== '') {
+    if (origin !== '' && destination !== '') {
       directionsService.route({
         origin: origin,
         destination: destination,
@@ -108,21 +107,4 @@ function initMap() {
       });
     }
   }
-  function crearMarcador(gMapa) {
-        icono = {
-            url: 'http://icons.iconarchive.com/icons/sonya/swarm/128/Bike-icon.png',
-            size: new google.maps.Size(71, 71),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(17, 34),
-            scaledSize: new google.maps.Size(35, 35)
-        };
-
-        var marker = new google.maps.Marker({
-            map: map,
-            animation: google.maps.Animation.DROP,
-            icon: icono,
-            anchorPoint: new google.maps.Point(0, -29)
-        });
-
-        return marker;
-    }
+};
